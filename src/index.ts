@@ -111,7 +111,7 @@ function loseLife(): void {
       gameScene.destroy();
       gameScene = createGameScene();
       app.stage.addChild(gameScene);
-      lives = 3;
+      lives = 10;
       livesText.text = `Lives left: ${lives}`;
     });
   }
