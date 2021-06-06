@@ -28,6 +28,7 @@ loader.add([foodTilesetImage, knightTilesetImage, musicFile]).load(setup);
 let food: Food;
 let hero: Hero;
 let lives = 10;
+let points = 0;
 let audio: HTMLAudioElement;
 let gameOverScene: PIXI.Container;
 let gameScene: PIXI.Container;
@@ -88,7 +89,7 @@ function gameLoop(delta: number): void {
 function loseLife(): void {
   //lose life
   lives--;
-  livesText.text = `Lives left: ${lives}`;
+  livesText.text = `Lives left: ${lives}\n Points: ${points}`;
 
   //logic for switching the scenes after lose
   if (lives <= 0) {
@@ -112,9 +113,15 @@ function loseLife(): void {
       gameScene = createGameScene();
       app.stage.addChild(gameScene);
       lives = 10;
-      livesText.text = `Lives left: ${lives}`;
+      points = 0;
+      livesText.text = `Lives left: ${lives}\n Points: ${points}`;
     });
   }
+}
+
+function addPoint(): void {
+  points++;
+  livesText.text = `Lives left: ${lives}\n Points: ${points}`;
 }
 
 //add mouse interactivity for hero
@@ -185,9 +192,10 @@ function createGameScene(): PIXI.Container {
     fill: "white",
     dropShadow: true,
     dropShadowColor: 0x555555,
+    align: "center",
   });
 
-  livesText = new Text(`Lives left: ${lives}`, style);
+  livesText = new Text(`Lives left: ${lives}\n Points: ${points}`, style);
   livesText.anchor.set(0.5, 0.5);
   livesText.x = app.renderer.width / 2;
   livesText.y = app.renderer.height / 2;
@@ -204,6 +212,7 @@ function createGameScene(): PIXI.Container {
     scene: gameScene,
     tileset: foodTilesetTexture,
     loseLife: loseLife,
+    addPoint: addPoint,
     hero: hero,
     app: app,
   });

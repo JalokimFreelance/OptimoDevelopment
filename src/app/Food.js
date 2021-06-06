@@ -27,7 +27,7 @@ export default class Food {
     }
     //create a food sprite
     createFoodSprite() {
-        let { tileset, scene, loseLife, app } = this.props;
+        let { tileset, scene, loseLife, addPoint, app } = this.props;
         //spawn a new food sprite
         let sprite = new FoodSprite({
             tileset: tileset,
@@ -52,9 +52,11 @@ export default class Food {
             //check if sprite collides with hero,
             if (this.sprites[i].collides(this.props.hero)) {
                 //delete the sprite from sprites array, make it invisible and stop updating
+                if (this.sprites[i].visible) {
+                    this.props.addPoint();
+                }
                 this.sprites[i].visible = false;
                 this.sprites[i].stopUpdating();
-                //remove from food array
                 this.sprites.slice(i, 1);
             }
         }

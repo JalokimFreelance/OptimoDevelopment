@@ -21,6 +21,7 @@ loader.add([foodTilesetImage, knightTilesetImage, musicFile]).load(setup);
 let food;
 let hero;
 let lives = 10;
+let points = 0;
 let audio;
 let gameOverScene;
 let gameScene;
@@ -69,7 +70,7 @@ function gameLoop(delta) {
 function loseLife() {
     //lose life
     lives--;
-    livesText.text = `Lives left: ${lives}`;
+    livesText.text = `Lives left: ${lives}\n Points: ${points}`;
     //logic for switching the scenes after lose
     if (lives <= 0) {
         //stop spawning food
@@ -89,9 +90,14 @@ function loseLife() {
             gameScene = createGameScene();
             app.stage.addChild(gameScene);
             lives = 10;
-            livesText.text = `Lives left: ${lives}`;
+            points = 0;
+            livesText.text = `Lives left: ${lives}\n Points: ${points}`;
         });
     }
+}
+function addPoint() {
+    points++;
+    livesText.text = `Lives left: ${lives}\n Points: ${points}`;
 }
 //add mouse interactivity for hero
 function addInteractivity() {
@@ -144,8 +150,9 @@ function createGameScene() {
         fill: "white",
         dropShadow: true,
         dropShadowColor: 0x555555,
+        align: "center",
     });
-    livesText = new Text(`Lives left: ${lives}`, style);
+    livesText = new Text(`Lives left: ${lives}\n Points: ${points}`, style);
     livesText.anchor.set(0.5, 0.5);
     livesText.x = app.renderer.width / 2;
     livesText.y = app.renderer.height / 2;
@@ -159,6 +166,7 @@ function createGameScene() {
         scene: gameScene,
         tileset: foodTilesetTexture,
         loseLife: loseLife,
+        addPoint: addPoint,
         hero: hero,
         app: app,
     });
